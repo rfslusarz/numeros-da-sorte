@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Números da Sorte - Mega-Sena</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu lateral esquerdo -->
+        <aside class="sidebar">
+            <h3>Buscar Concurso</h3>
+            <div class="search-section">
+                <label for="date-input">Data do concurso:</label>
+                <input type="date" id="date-input" class="date-input">
+                <button id="search-btn" class="btn-search">Buscar</button>
+            </div>
+            <div id="draw-result" class="draw-result"></div>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Esses serão seus números da sorte</h1>
+                <p id="current-date" class="current-date"></p>
+            </header>
+
+            <div class="action-section">
+                <button id="generate-btn" class="btn-generate">Gerar</button>
+                <button id="clear-btn" class="btn-clear">Limpar</button>
+            </div>
+
+            <div class="results-section">
+                <div class="result-card">
+                    <h2>Quadra</h2>
+                    <div id="quadra-result" class="numbers-display"></div>
+                </div>
+
+                <div class="result-card">
+                    <h2>Quina</h2>
+                    <div id="quina-result" class="numbers-display"></div>
+                </div>
+
+                <div class="result-card">
+                    <h2>Sorte</h2>
+                    <div id="sorte-result" class="numbers-display"></div>
+                </div>
+            </div>
+
+            <div id="loading" class="loading hidden">Carregando...</div>
+            <div id="error" class="error hidden"></div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
