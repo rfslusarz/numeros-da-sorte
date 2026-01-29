@@ -3,56 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Números da Sorte - Mega-Sena</title>
+    <meta name="description" content="Sistema de análise estatística da Mega-Sena com estimativas baseadas em dados históricos">
+    <meta name="keywords" content="mega-sena, loteria, números da sorte, estatística, probabilidade">
+    <meta name="author" content="Rafael Slusarz">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Números da Sorte - Mega-Sena | Análise Estatística</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <!-- Menu lateral esquerdo -->
-        <aside class="sidebar">
+        <aside class="sidebar" role="complementary" aria-label="Busca de concursos">
             <h3>Buscar Concurso</h3>
             <div class="search-section">
                 <label for="date-input">Data do concurso:</label>
-                <input type="date" id="date-input" class="date-input">
-                <button id="search-btn" class="btn-search">Buscar</button>
+                <input 
+                    type="date" 
+                    id="date-input" 
+                    class="date-input"
+                    aria-label="Selecione a data do concurso"
+                    aria-describedby="date-help"
+                >
+                <span id="date-help" class="sr-only">Formato: DD/MM/AAAA</span>
+                <button 
+                    id="search-btn" 
+                    class="btn-search"
+                    aria-label="Buscar concurso pela data selecionada"
+                >
+                    Buscar
+                </button>
             </div>
-            <div id="draw-result" class="draw-result"></div>
+            <div 
+                id="draw-result" 
+                class="draw-result"
+                role="region"
+                aria-live="polite"
+                aria-label="Resultado da busca"
+            ></div>
         </aside>
 
         <!-- Conteúdo principal -->
-        <main class="main-content">
+        <main class="main-content" role="main">
             <header class="header">
                 <h1>Esses serão seus números da sorte</h1>
-                <p id="current-date" class="current-date"></p>
+                <p id="current-date" class="current-date" aria-live="polite"></p>
             </header>
 
-            <div class="action-section">
-                <button id="generate-btn" class="btn-generate">Gerar</button>
-                <button id="clear-btn" class="btn-clear">Limpar</button>
+            <div class="action-section" role="group" aria-label="Ações">
+                <button 
+                    id="generate-btn" 
+                    class="btn-generate"
+                    aria-label="Gerar nova estimativa de números"
+                    aria-describedby="generate-help"
+                >
+                    Gerar
+                </button>
+                <span id="generate-help" class="sr-only">Atalho: Ctrl+G</span>
+                
+                <button 
+                    id="clear-btn" 
+                    class="btn-clear"
+                    aria-label="Limpar todos os resultados"
+                    aria-describedby="clear-help"
+                >
+                    Limpar
+                </button>
+                <span id="clear-help" class="sr-only">Atalho: Ctrl+L</span>
             </div>
 
-            <div class="results-section">
-                <div class="result-card">
+            <div class="results-section" role="region" aria-label="Resultados das estimativas">
+                <article class="result-card">
                     <h2>Quadra</h2>
-                    <div id="quadra-result" class="numbers-display"></div>
-                </div>
+                    <div 
+                        id="quadra-result" 
+                        class="numbers-display"
+                        role="list"
+                        aria-label="Números da quadra"
+                    ></div>
+                </article>
 
-                <div class="result-card">
+                <article class="result-card">
                     <h2>Quina</h2>
-                    <div id="quina-result" class="numbers-display"></div>
-                </div>
+                    <div 
+                        id="quina-result" 
+                        class="numbers-display"
+                        role="list"
+                        aria-label="Números da quina"
+                    ></div>
+                </article>
 
-                <div class="result-card">
+                <article class="result-card">
                     <h2>Sorte</h2>
-                    <div id="sorte-result" class="numbers-display"></div>
-                </div>
+                    <div 
+                        id="sorte-result" 
+                        class="numbers-display"
+                        role="list"
+                        aria-label="Números da sorte (sena)"
+                    ></div>
+                </article>
             </div>
 
-            <div id="loading" class="loading hidden">Carregando...</div>
-            <div id="error" class="error hidden"></div>
+            <div 
+                id="loading" 
+                class="loading hidden"
+                role="status"
+                aria-live="polite"
+            >
+                Carregando...
+            </div>
+            
+            <div 
+                id="error" 
+                class="error hidden"
+                role="alert"
+                aria-live="assertive"
+            ></div>
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <!-- ES6 Module Script -->
+    <script type="module" src="script.js"></script>
+    
+    <!-- Screen reader only styles -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 </body>
 </html>
+

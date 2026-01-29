@@ -1,43 +1,50 @@
 # Números da Sorte - Mega-Sena
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![GitHub](https://img.shields.io/badge/GitHub-rfslusarz-181717?style=flat-square&logo=github)](https://github.com/rfslusarz/numeros-da-sorte)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Redis](https://img.shields.io/badge/Redis-7.0+-DC382D?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-Passing-success?style=flat-square)](backend/tests/)
+[![Coverage](https://img.shields.io/badge/Coverage-70%25+-success?style=flat-square)](backend/htmlcov/)
 
-## Descrição
+> Sistema de análise estatística da Mega-Sena com estimativas baseadas em dados históricos dos últimos 2 anos.
 
-Sistema web full-stack para análise estatística e estimativa probabilística de números da Mega-Sena, baseado em dados históricos reais dos últimos 2 anos obtidos através da API pública da Caixa Econômica Federal.
+## Índice
 
-A aplicação consome dados de concursos anteriores, processa as frequências de cada número sorteado e gera sugestões de jogos (quadra, quina e sena) com base nos números mais recorrentes no período analisado.
+- [Visão Geral](#-visão-geral)
+- [Características](#-características)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Arquitetura](#-arquitetura)
+- [Tecnologias](#-tecnologias)
+- [Instalação](#-instalação)
+- [Uso](#-uso)
+- [API](#-api)
+- [Testes](#-testes)
+- [Docker](#-docker)
+- [CI/CD](#-cicd)
+- [Licença](#-licença)
 
-## Objetivo do Projeto
+## Visão Geral
 
-Este projeto foi desenvolvido com propósito educacional e de portfólio, demonstrando competências em:
+O **Números da Sorte** é uma aplicação full-stack profissional que analisa dados históricos da Mega-Sena para gerar estimativas estatísticas de números mais prováveis. O sistema utiliza análise de frequência dos últimos 2 anos de concursos para sugerir combinações de quadra, quina e sena.
 
-- Desenvolvimento de APIs RESTful com FastAPI
-- Integração com APIs públicas externas
-- Processamento e análise de dados históricos
-- Desenvolvimento frontend com JavaScript Vanilla
-- Arquitetura de software em camadas
-- Boas práticas de organização de código
+### Funcionalidades Principais
 
-## Tecnologias Utilizadas
+- **Análise Estatística**: Processamento de dados históricos com cálculo de frequências
+- **Estimativas Inteligentes**: Geração de quadra (4), quina (5) e sena (6) números
+- **Busca por Data**: Consulta de resultados de concursos específicos
+- **Cache Inteligente**: Sistema de cache com Redis e fallback em memória
+- **Circuit Breaker**: Proteção contra falhas em cascata
+- **Logging Estruturado**: Logs em JSON para análise e monitoramento
+- **Segurança**: Rate limiting, CORS configurável, headers de segurança
 
-### Backend
-- **Python 3.11+** - Linguagem de programação
-- **FastAPI 0.104.1** - Framework web moderno e de alta performance
-- **Uvicorn 0.24.0** - Servidor ASGI para aplicações assíncronas
-- **Requests 2.31.0** - Biblioteca para requisições HTTP
-- **Python-dateutil 2.8.2** - Manipulação avançada de datas
+### Demonstração
 
-### Frontend
-- **HTML5** - Estrutura semântica da aplicação
-- **CSS3** - Estilização moderna com gradientes, animações e responsividade
-- **JavaScript (Vanilla)** - Lógica de interação e comunicação com API
-- **Fetch API** - Requisições assíncronas ao backend
+![Demonstração da Aplicação](docs/demo.gif)
+
+*A aplicação em funcionamento: gerando estimativas e buscando concursos por data.*
+
 
 ## Estrutura do Projeto
 
@@ -45,165 +52,223 @@ Este projeto foi desenvolvido com propósito educacional e de portfólio, demons
 numeros-da-sorte/
 ├── backend/
 │   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py                      # Aplicação FastAPI principal
-│   │   ├── routes/
-│   │   │   ├── __init__.py
-│   │   │   └── api.py                   # Definição dos endpoints REST
-│   │   ├── services/
-│   │   │   ├── __init__.py
-│   │   │   └── mega_sena_service.py     # Lógica de busca e processamento de dados
-│   │   └── utils/
-│   │       ├── __init__.py
-│   │       └── data_processor.py        # Funções de cálculo estatístico
-│   ├── requirements.txt                  # Dependências Python
-│   ├── start.bat                         # Script de inicialização (Windows)
-│   └── start.sh                          # Script de inicialização (Linux/Mac)
+│   │   ├── routes/          # Endpoints da API
+│   │   ├── services/        # Lógica de negócio
+│   │   ├── utils/           # Utilitários (cache, logging, etc)
+│   │   ├── config.py        # Configurações
+│   │   ├── exceptions.py    # Exceções customizadas
+│   │   ├── models.py        # Modelos Pydantic
+│   │   └── main.py          # Aplicação FastAPI
+│   ├── tests/               # Testes automatizados
+│   ├── Dockerfile           # Imagem Docker do backend
+│   ├── requirements.txt     # Dependências de produção
+│   └── requirements-dev.txt # Dependências de desenvolvimento
 ├── frontend/
-│   ├── index.html                        # Interface principal
-│   ├── styles.css                        # Estilos da aplicação
-│   └── script.js                         # Lógica de interação
+│   ├── js/
+│   │   ├── api.js           # Cliente API
+│   │   ├── ui.js            # Manipulação DOM
+│   │   ├── state.js         # Gerenciamento de estado
+│   │   └── utils.js         # Funções utilitárias
+│   ├── index.html           # Página principal
+│   ├── styles.css           # Estilos
+│   ├── script.js            # Aplicação principal
+│   ├── nginx.conf           # Configuração Nginx
+│   └── Dockerfile           # Imagem Docker do frontend
 ├── docs/
-│   └── screenshot.png                    # Captura de tela da aplicação
-└── README.md
+│   ├── architecture.md      # Documentação de arquitetura
+│   └── api-examples.md      # Exemplos de uso da API
+├── .github/
+│   └── workflows/
+│       └── ci.yml           # Pipeline CI/CD
+├── docker-compose.yml       # Orquestração de containers
+├── CONTRIBUTING.md          # Guia de contribuição
+└── README.md                # Este arquivo
 ```
 
-### Descrição das Camadas
+## Características
 
-- **Routes** - Define os endpoints da API REST e validação de requisições
-- **Services** - Implementa a lógica de negócio e comunicação com APIs externas
-- **Utils** - Funções auxiliares para processamento e análise de dados
+### Backend
 
-## Como Executar o Projeto
+- **Framework Moderno**: FastAPI com validação automática via Pydantic
+- **Cache Distribuído**: Redis como cache primário com fallback para memória
+- **Resiliência**: Circuit breaker para proteção de APIs externas
+- **Observabilidade**: Logging estruturado com níveis configuráveis
+- **Validação**: Modelos Pydantic para request/response
+- **Documentação**: Swagger UI e ReDoc automáticos
+- **Testes**: Cobertura de 70%+ com pytest
+- **Type Safety**: Type hints e validação com mypy
+
+### Frontend
+
+- **Modular**: Código organizado em módulos ES6
+- **Acessível**: ARIA attributes e suporte a leitores de tela
+- **Responsivo**: Design adaptável para diferentes dispositivos
+- **Estado Persistente**: LocalStorage para manter preferências
+- **Retry Logic**: Tentativas automáticas com exponential backoff
+- **Keyboard Shortcuts**: Atalhos para ações principais
+
+## Arquitetura
+
+```mermaid
+graph TB
+    subgraph "Frontend"
+        UI[HTML/CSS/JS]
+        Modules[Módulos ES6]
+    end
+    
+    subgraph "Backend"
+        API[FastAPI]
+        Services[Business Logic]
+        Cache[Cache Manager]
+        CB[Circuit Breaker]
+    end
+    
+    subgraph "Infraestrutura"
+        Redis[(Redis)]
+        External[API Caixa]
+    end
+    
+    UI --> Modules
+    Modules --> API
+    API --> Services
+    Services --> Cache
+    Services --> CB
+    Cache --> Redis
+    CB --> External
+```
+
+Para mais detalhes, consulte a [Documentação de Arquitetura](docs/architecture.md).
+
+## Tecnologias
+
+### Backend
+- **Python 3.11+**
+- **FastAPI** - Framework web assíncrono
+- **Pydantic** - Validação de dados
+- **Redis** - Cache distribuído
+- **Uvicorn** - Servidor ASGI
+- **Requests** - Cliente HTTP
+- **SlowAPI** - Rate limiting
+
+### Frontend
+- **HTML5** - Estrutura semântica
+- **CSS3** - Estilização moderna
+- **JavaScript ES6+** - Módulos e features modernas
+- **Fetch API** - Comunicação com backend
+
+### DevOps
+- **Docker** - Containerização
+- **Docker Compose** - Orquestração
+- **GitHub Actions** - CI/CD
+- **Pytest** - Framework de testes
+- **Black** - Formatação de código
+- **Flake8** - Linting
+- **MyPy** - Type checking
+
+## Instalação
 
 ### Pré-requisitos
 
-- Python 3.11 ou superior
-- pip (gerenciador de pacotes Python)
-- Navegador web moderno
-- Conexão com a internet (para consumo da API da Caixa)
+- Python 3.11+
+- Redis (opcional, usa fallback em memória)
+- Docker e Docker Compose (para deploy containerizado)
 
-### Instalação e Execução do Backend
+### Instalação Local
 
-1. Clone o repositório:
-```bash
-git clone https://github.com/rfslusarz/numeros-da-sorte.git
-cd numeros-da-sorte
-```
+#### Backend
 
-2. Navegue até a pasta do backend:
 ```bash
 cd backend
-```
 
-3. Crie e ative um ambiente virtual:
-
-Windows:
-```bash
+# Criar ambiente virtual
 python -m venv venv
+
+# Ativar ambiente virtual
+# Windows:
 venv\Scripts\activate
-```
-
-Linux/Mac:
-```bash
-python -m venv venv
+# Linux/Mac:
 source venv/bin/activate
-```
 
-4. Instale as dependências:
-```bash
+# Instalar dependências
 pip install -r requirements.txt
+
+# Copiar arquivo de configuração
+copy .env.example .env
+
+# Editar .env conforme necessário
 ```
 
-5. Execute o servidor:
+#### Frontend
 
-Opção 1 - Script de inicialização (Windows):
-```bash
-start.bat
-```
+O frontend é estático e não requer instalação. Basta servir os arquivos com um servidor web.
 
-Opção 2 - Script de inicialização (Linux/Mac):
-```bash
-chmod +x start.sh
-./start.sh
-```
+## Uso
 
-Opção 3 - Comando direto com Uvicorn:
+### Desenvolvimento
+
+#### Backend
+
 ```bash
+cd backend
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-O backend estará disponível em: `http://localhost:8000`
+A API estará disponível em `http://localhost:8000`
 
-Documentação interativa da API (Swagger): `http://localhost:8000/docs`
+#### Frontend
 
-### Instalação e Execução do Frontend
+Você pode usar qualquer servidor web estático. Exemplos:
 
-1. Navegue até a pasta do frontend:
 ```bash
+# Python
 cd frontend
-```
-
-2. Inicie um servidor HTTP local:
-
-Opção 1 - Python:
-```bash
 python -m http.server 8080
-```
 
-Opção 2 - Node.js:
-```bash
+# Node.js (http-server)
+cd frontend
 npx http-server -p 8080
+
+# PHP
+cd frontend
+php -S localhost:8080
 ```
 
-Opção 3 - Live Server (VS Code):
-- Instale a extensão "Live Server"
-- Clique com botão direito em `index.html`
-- Selecione "Open with Live Server"
+O frontend estará disponível em `http://localhost:8080`
 
-3. Acesse a aplicação no navegador:
-```
-http://localhost:8080
-```
+### Produção com Docker
 
-Alternativamente, é possível abrir o arquivo `frontend/index.html` diretamente no navegador, desde que o backend esteja em execução.
+```bash
+# Build e start todos os serviços
+docker-compose up -d
 
-## Funcionalidades
+# Ver logs
+docker-compose logs -f
 
-### Backend
-- Consumo da API pública da Caixa Econômica Federal
-- Filtragem automática dos concursos dos últimos 2 anos
-- Cálculo de frequências e probabilidades estatísticas
-- Geração de estimativas para quadra, quina e sena
-- Sistema de cache para otimização de performance
-- Tratamento robusto de erros e exceções
-- Documentação automática com Swagger/OpenAPI
-
-### Frontend
-- Interface moderna e responsiva
-- Geração de estimativas com um clique
-- Busca de resultados de concursos por data
-- Exibição visual dos números em formato de bolas
-- Feedback visual de carregamento e tratamento de erros
-- Design adaptável para diferentes dispositivos
-
-## Endpoints da API
-
-### GET /api/health
-Verifica o status de saúde da API.
-
-Resposta:
-```json
-{
-  "status": "ok",
-  "timestamp": "2024-01-15T10:30:00"
-}
+# Parar serviços
+docker-compose down
 ```
 
-### GET /api/estimate
-Retorna estimativa de números mais prováveis baseada em análise de frequência dos últimos 2 anos.
+Serviços disponíveis:
+- Frontend: `http://localhost:8080`
+- Backend API: `http://localhost:8000`
+- API Docs: `http://localhost:8000/docs`
+- Redis: `localhost:6379`
 
-Resposta:
+## API
+
+### Endpoints Principais
+
+#### Health Check
+```http
+GET /api/health
+```
+
+#### Gerar Estimativa
+```http
+GET /api/estimate
+```
+
+**Response:**
 ```json
 {
   "data": "2024-01-15",
@@ -213,13 +278,15 @@ Resposta:
 }
 ```
 
-### GET /api/draw/{date}
-Retorna os números sorteados em uma data específica.
+#### Buscar Concurso por Data
+```http
+GET /api/draw/{date}
+```
 
-Parâmetros:
-- `date` - Data no formato YYYY-MM-DD
+**Parâmetros:**
+- `date`: Data no formato YYYY-MM-DD
 
-Resposta de sucesso:
+**Response:**
 ```json
 {
   "data": "15/01/2024",
@@ -228,65 +295,128 @@ Resposta de sucesso:
 }
 ```
 
-Resposta de erro (404):
-```json
-{
-  "detail": "Nenhum concurso encontrado para a data 2024-01-15"
-}
+#### Estatísticas do Sistema
+```http
+GET /api/stats
 ```
 
-## Metodologia de Cálculo
+#### Limpar Cache
+```http
+POST /api/cache/clear
+```
 
-O sistema utiliza análise estatística de frequência para gerar as estimativas:
+### Documentação Interativa
 
-1. Busca todos os concursos realizados nos últimos 2 anos através da API pública da Caixa
-2. Contabiliza a frequência de aparição de cada número (1 a 60) no período
-3. Ordena os números do mais frequente para o menos frequente
-4. Seleciona os números mais recorrentes para compor as sugestões:
-   - **Quadra**: 4 números mais frequentes
-   - **Quina**: 5 números mais frequentes
-   - **Sorte (Sena)**: 6 números mais frequentes
+- **Swagger UI**: `http://localhost:8000/docs`
+- **ReDoc**: `http://localhost:8000/redoc`
 
-## Aviso Legal
+Para exemplos completos, consulte [Exemplos de API](docs/api-examples.md).
 
-Este sistema fornece apenas estimativas estatísticas baseadas em dados históricos e foi desenvolvido exclusivamente para fins educacionais e de análise de dados.
+## Testes
 
-**IMPORTANTE:**
-- As estimativas não garantem ganhos ou aumentam probabilidades de acerto
-- A Mega-Sena é um jogo de sorte com números sorteados aleatoriamente
-- Cada sorteio é independente e não há relação causal entre sorteios anteriores e futuros
-- Do ponto de vista matemático, todos os números de 1 a 60 possuem a mesma probabilidade em cada sorteio
-- Este sistema é uma ferramenta de entretenimento e análise estatística
-- Jogue com responsabilidade e dentro de suas possibilidades financeiras
+### Executar Todos os Testes
 
-### Limitações Técnicas
-- Dependência de APIs públicas externas (sujeitas a disponibilidade)
-- Análise limitada aos últimos 2 anos de concursos
-- Método baseado em frequência simples, sem modelos preditivos complexos
-- Requer conexão ativa com a internet
+```bash
+cd backend
+pytest
+```
 
-## Boas Práticas Aplicadas
+### Testes com Cobertura
 
-- Arquitetura em camadas (Routes, Services, Utils)
-- Separação de responsabilidades (SoC)
-- Código modular e reutilizável
-- Tratamento adequado de exceções
-- Validação de dados de entrada
-- Documentação automática de API
-- Uso de ambiente virtual Python
-- Organização clara de estrutura de pastas
+```bash
+pytest --cov=app --cov-report=html --cov-report=term
+```
 
-## Exemplo de Tela
+Relatório HTML disponível em `backend/htmlcov/index.html`
 
-![Exemplo da aplicação](docs/screenshot.png)
+### Testes por Categoria
 
-## Observações
+```bash
+# Apenas testes unitários
+pytest -m unit
 
-Este projeto faz parte do meu portfólio profissional e demonstra habilidades em desenvolvimento full-stack, integração de APIs, processamento de dados e criação de interfaces web responsivas.
+# Apenas testes de integração
+pytest -m integration
 
-Os dados e números apresentados nos exemplos são ilustrativos e servem apenas para demonstração do formato das respostas da API.
+# Testes lentos
+pytest -m slow
+```
 
+### Linting e Type Checking
+
+```bash
+# Flake8
+flake8 app/
+
+# Black (formatação)
+black --check app/
+
+# MyPy (type checking)
+mypy app/
+```
+
+## Docker
+
+### Build das Imagens
+
+```bash
+# Backend
+docker build -t megasena-backend ./backend
+
+# Frontend
+docker build -t megasena-frontend ./frontend
+```
+
+### Docker Compose
+
+```bash
+# Start
+docker-compose up -d
+
+# Logs
+docker-compose logs -f backend
+
+# Restart serviço específico
+docker-compose restart backend
+
+# Stop
+docker-compose down
+
+# Stop e remove volumes
+docker-compose down -v
+```
+
+## CI/CD
+
+O projeto utiliza GitHub Actions para CI/CD automático.
+
+### Pipeline
+
+1. **Lint**: Flake8, Black, MyPy
+2. **Test**: Pytest com cobertura
+3. **Build**: Docker images
+4. **Security**: Trivy scan
+
+### Executar Localmente
+
+```bash
+# Instalar dependências de desenvolvimento
+pip install -r requirements-dev.txt
+
+# Lint
+flake8 app/
+black --check app/
+mypy app/
+
+# Testes
+pytest --cov=app
+
+# Build Docker
+docker-compose build
+```
 
 ## Licença
 
-Este projeto está disponível para uso educacional e de portfólio.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+

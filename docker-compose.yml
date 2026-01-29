@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: megasena-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - API_TITLE=API Mega-Sena - Estimativa Probabilística
+      - API_VERSION=1.0.0
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=False
+      - CORS_ORIGINS=http://localhost:8080,http://localhost:80
+      - CACHE_TYPE=redis
+      - REDIS_URL=redis://redis:6379/0
+      - RATE_LIMIT_ENABLED=True
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    depends_on:
+      - redis
+    networks:
+      - megasena-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: megasena-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - megasena-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: megasena-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - megasena-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  megasena-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
